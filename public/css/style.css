@@ -1,0 +1,491 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 12px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 8px;
+    }
+    
+    .container {
+        padding: 0;
+    }
+}
+
+.header {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.header p {
+    color: #666;
+    font-size: 12px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+}
+
+.stat-card {
+    background: white;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card h3 {
+    color: #666;
+    font-size: 11px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-card .value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 右下角版本和设备ID */
+.footer-info {
+    position: fixed;
+    right: 16px;
+    bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.45;
+    transition: opacity 0.3s;
+    z-index: 100;
+}
+
+.footer-info:hover {
+    opacity: 0.85;
+}
+
+.footer-item {
+    font-size: 11px;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    user-select: all;
+}
+
+.footer-id {
+    max-width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.footer-divider {
+    color: rgba(255,255,255,0.3);
+    font-size: 10px;
+}
+
+/* 版本更新提示 */
+.footer-item.has-upgrade {
+    color: #ffd54f;
+    opacity: 1;
+    font-weight: bold;
+}
+
+.upgrade-arrow {
+    display: inline-block;
+    margin-left: 4px;
+    animation: upgrade-bounce 0.8s ease-in-out infinite;
+}
+
+@keyframes upgrade-bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+.stat-card.connected .value {
+    color: #10b981;
+}
+
+.stat-card.disconnected .value {
+    color: #ef4444;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.status-indicator.online {
+    color: #10b981;
+}
+
+.status-indicator.offline {
+    color: #ef4444;
+}
+
+.devices-section {
+    background: white;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.devices-section h2 {
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.devices-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    .devices-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+}
+
+.device-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 10px;
+    background: #f9fafb;
+    transition: all 0.2s;
+}
+
+.device-card:hover {
+    border-color: #667eea;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+}
+
+.device-card.online {
+    border-color: #10b981;
+    background: #ecfdf5;
+}
+
+.device-card.offline {
+    border-color: #ef4444;
+    background: #fef2f2;
+}
+
+.device-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.device-name {
+    font-size: 13px;
+    font-weight: bold;
+    color: #333;
+}
+
+.device-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 3px 6px;
+    border-radius: 8px;
+    font-size: 9px;
+    font-weight: 500;
+}
+
+.device-status.online {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.device-status.offline {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.device-status.online .status-dot {
+    background: #10b981;
+}
+
+.device-status.offline .status-dot {
+    background: #ef4444;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.device-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+}
+
+@media (max-width: 768px) {
+    .device-info {
+        grid-template-columns: 1fr;
+        gap: 3px;
+    }
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-label {
+    font-size: 9px;
+    color: #666;
+    margin-bottom: 1px;
+}
+
+.info-value {
+    font-size: 10px;
+    color: #333;
+    font-weight: 500;
+}
+
+.no-devices {
+    text-align: center;
+    padding: 24px;
+    color: #666;
+    font-size: 13px;
+}
+
+.logs-section {
+    background: white;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logs-section h2 {
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.logs-container {
+    background: #1e1e1e;
+    border-radius: 6px;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.log-entry {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    padding: 4px 0;
+    border-bottom: 1px solid #333;
+    color: #e0e0e0;
+    line-height: 1.4;
+}
+
+.log-entry:last-child {
+    border-bottom: none;
+}
+
+.log-entry .timestamp {
+    color: #888;
+    margin-right: 8px;
+    font-size: 10px;
+}
+
+.log-entry.info {
+    color: #60a5fa;
+}
+
+.log-entry.success {
+    color: #34d399;
+}
+
+.log-entry.error {
+    color: #f87171;
+}
+
+.log-entry.warning {
+    color: #fbbf24;
+}
+
+.refresh-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.refresh-btn:hover {
+    background: #5568d3;
+}
+
+.refresh-btn:active {
+    transform: scale(0.98);
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: #667eea;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5568d3;
+}
+
+.btn-danger {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+}
+
+.http-logs-section {
+    background: white;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.http-logs-section h2 {
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.http-logs-container {
+    background: #1e1e1e;
+    border-radius: 6px;
+    padding: 10px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.http-log-entry {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    padding: 4px 0;
+    border-bottom: 1px solid #333;
+    color: #e0e0e0;
+    line-height: 1.4;
+}
+
+.http-log-entry:last-child {
+    border-bottom: none;
+}
+
+.http-log-entry .timestamp {
+    color: #888;
+    margin-right: 8px;
+    font-size: 9px;
+}
+
+.http-log-entry .method {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: bold;
+    margin-right: 6px;
+}
+
+.http-log-entry .method.GET {
+    background: #10b981;
+    color: white;
+}
+
+.http-log-entry .method.POST {
+    background: #667eea;
+    color: white;
+}
+
+.http-log-entry .method.PUT {
+    background: #f59e0b;
+    color: white;
+}
+
+.http-log-entry .method.DELETE {
+    background: #ef4444;
+    color: white;
+}
+
+.http-log-entry .url {
+    color: #60a5fa;
+    word-break: break-all;
+}

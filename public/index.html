@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微设备免流服务1.0.6</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card" :class="status.connected ? 'connected' : 'disconnected'">
+                    <h3>连接状态</h3>
+                    <div class="status-indicator" :class="status.connected ? 'online' : 'offline'">
+                        <span class="status-dot"></span>
+                        <span>{{ status.connected ? '已连接' : '未连接' }}</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <h3>设备数量</h3>
+                    <div class="value">{{ status.deviceCount }}</div>
+                </div>
+
+                <div class="stat-card">
+                    <h3>HTTP请求数</h3>
+                    <div class="value">{{ status.requestCount }}</div>
+                </div>
+
+                <div class="stat-card">
+                    <h3>运行时间</h3>
+                    <div class="value">{{ uptime }}</div>
+                </div>
+            </div>
+
+            <div class="devices-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h2>连接的设备</h2>
+                    <button class="refresh-btn" @click="refreshStatus">刷新状态</button>
+                </div>
+                <div class="devices-grid">
+                    <div v-if="devices.length === 0" class="no-devices">暂无设备连接</div>
+                    <div v-for="device in devices" :key="device.imei" 
+                         class="device-card" 
+                         :class="device.connected ? 'online' : 'offline'">
+                        <div class="device-header">
+                            <div class="device-name">{{ device.deviceName || '未知设备' }}</div>
+                            <div class="device-status" :class="device.connected ? 'online' : 'offline'">
+                                <span class="status-dot"></span>
+                                <span>{{ device.connected ? '在线' : '离线' }}</span>
+                            </div>
+                        </div>
+                        <div class="device-info">
+                            <div class="info-item">
+                                <span class="info-label">IMEI</span>
+                                <span class="info-value">{{ device.imei || '未知' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">设备号码</span>
+                                <span class="info-value">{{ device.phoneNumber || '未设置' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">网络模式</span>
+                                <span class="info-value">{{ device.netMode || '未知' }}（{{ device.portPath || '未知' }}）</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">版本</span>
+                                <span class="info-value">{{ device.version || '未知' }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">连接时长</span>
+                                <span class="info-value">{{ formatTime(device.connectedFor) }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">最后心跳</span>
+                                <span class="info-value">{{ formatTime(device.lastSeenAgo) }}前</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="logs-section" v-if="showLogs">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h2>系统日志</h2>
+                    <div class="actions">
+                        <button class="btn btn-danger" @click="clearLogs">清空日志</button>
+                    </div>
+                </div>
+                <div class="logs-container">
+                    <div v-if="logs.length === 0" class="log-entry">
+                        <span class="timestamp">--:--:--</span>
+                        <span>正在初始化...</span>
+                    </div>
+                    <div v-for="log in logs" :key="log.id" class="log-entry" :class="log.type">
+                        <span class="timestamp">{{ log.timestamp }}</span>
+                        <span>{{ log.message }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="http-logs-section" v-if="showHttpLogs">
+                <h2>HTTP请求日志</h2>
+                <div class="http-logs-container">
+                    <div v-if="httpLogs.length === 0" class="http-log-entry">
+                        <span class="timestamp">--:--:--</span>
+                        <span>暂无HTTP请求</span>
+                    </div>
+                    <div v-for="log in httpLogs" :key="log.timestamp + log.url" class="http-log-entry">
+                        <span class="timestamp">{{ formatHttpTime(log.timestamp) }}</span>
+                        <span class="method" :class="log.method">{{ log.method }}</span>
+                        <span class="url">{{ log.url }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-info">
+            <span class="footer-item" @dblclick="onVersionDblClick" :title="status.upgradeInfo && status.upgradeInfo.canUpgrade ? '发现新版本，双击更新' : '双击检查更新'" :class="{ 'has-upgrade': status.upgradeInfo && status.upgradeInfo.canUpgrade }" style="cursor:pointer;">
+                v{{ status.version || '-' }}<span v-if="status.upgradeInfo && status.upgradeInfo.canUpgrade" class="upgrade-arrow">⬆</span>
+            </span>
+            <span class="footer-divider">|</span>
+            <span class="footer-item footer-id" :title="status.machineId">{{ status.machineId || '-' }}</span>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
