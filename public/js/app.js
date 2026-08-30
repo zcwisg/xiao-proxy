@@ -20,7 +20,8 @@ createApp({
                 deviceCount: 0,
                 requestCount: 0,
                 cacheSize: 0,
-                uptime: 0
+                uptime: 0,
+                proxyName: ''
             },
             devices: [],
             logs: [],
@@ -165,12 +166,16 @@ createApp({
                 this.status.connected = data.connected;
                 this.status.machineId = data.machineId || '';
                 this.status.version = data.version || '';
+                if (data.version) {
+                    document.title = `微设备免流服务 v${data.version}`;
+                }
                 this.status.platform = data.platform || '';
                 this.status.upgradeInfo = data.upgradeInfo || null;
                 this.status.deviceCount = data.deviceCount || 0;
                 this.status.cacheSize = data.cacheSize;
                 this.status.requestCount = data.requestCount || 0;
                 this.status.uptime = data.uptime || 0;
+                this.status.proxyName = data.proxyName || '';
                 
                 if (data.devices && data.devices.length > 0) {
                     this.devices = data.devices.map(device => ({

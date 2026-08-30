@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>微设备免流服务1.0.6</title>
+    <title>微设备免流服务</title>
     <link rel="stylesheet" href="/css/style.css">
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="/js/vue.global.js"></script>
 </head>
 <body>
     <div id="app">
@@ -37,7 +37,7 @@
 
             <div class="devices-section">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h2>连接的设备</h2>
+                    <h2>{{ status.proxyName ? status.proxyName + ' - 连接的设备' : '连接的设备' }}</h2>
                     <button class="refresh-btn" @click="refreshStatus">刷新状态</button>
                 </div>
                 <div class="devices-grid">
