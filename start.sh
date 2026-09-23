@@ -4,13 +4,6 @@ echo "  UART NodeJS Service"
 echo "======================================="
 echo
 
-
-
-if [ ! -d "node_modules" ]; then
-    echo "[Info] Installing dependencies..."
-    ./install.sh
-fi
-
 # 读取配置文件中的端口号
 PORT=3000
 if [ -f "config.json" ]; then

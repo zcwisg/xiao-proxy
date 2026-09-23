@@ -2,5 +2,6 @@
   "web": {
     "enabled": true,
     "port": 3000
-  }
+  },
+  "proxyId": 58
 }
